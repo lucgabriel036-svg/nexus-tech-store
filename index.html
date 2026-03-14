@@ -1,593 +1,626 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modern Portfolio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ELOUNDOU</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Poppins, sans-serif;
+    }
 
-<style>
+    body {
+      background: #000;
+      color: #fff;
+    }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins,sans-serif;
+    html {
+      scroll-behavior: smooth;
+    }
+
+    header {
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+      width: 100%;
+      padding: 30px 8%;
+      display: flex;
+      justify-content: space-between;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(12px);
+    }
+
+    header h1 {
+      font-size: 28px;
+      letter-spacing: 2px;
+    }
+
+    header a {
+      color: #fff;
+      margin-left: 25px;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    header nav a:hover {
+      color: #00eaff;
+    }
+
+    /* Hero with Sword */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 800px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://img.goodfon.com/original/1920x1080/5/e7/oruzhie-mech-chernyy.jpg') no-repeat center right / auto 95%;
+      background-position: calc(100% - 8%) center;
+      filter: brightness(0.3) contrast(1.2) grayscale(0.35);
+      z-index: 1;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.4) 100%);
+      z-index: 2;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      max-width: 1000px;
+      padding: 0 6%;
+    }
+
+    .hero h1 {
+      font-size: clamp(4rem, 10vw, 11rem);
+      font-weight: 900;
+      letter-spacing: -3px;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.9), 0 0 30px rgba(0,234,255,0.25);
+    }
+
+    .tagline {
+      font-size: clamp(1.8rem, 5vw, 3.5rem);
+      font-weight: 400;
+      opacity: 0.92;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      margin: 1rem 0 2.5rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      padding: 20px 40px;
+      border-radius: 100px;
+      background: #00eaff;
+      color: #000;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #00bcd4;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      border: 2px solid #00eaff;
+      color: #00eaff;
+    }
+
+    .btn.secondary:hover {
+      background: #00eaff;
+      color: #000;
+    }
+
+    .social-sidebar {
+      position: fixed;
+      left: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .social-sidebar a {
+      color: #fff;
+      font-size: 1.6rem;
+      opacity: 0.7;
+      transition: all 0.4s ease;
+    }
+
+    .social-sidebar a:hover {
+      color: #00eaff;
+      opacity: 1;
+      transform: translateX(8px);
+    }
+
+    @media (max-width: 768px) {
+      .social-sidebar { left: 15px; gap: 1.4rem; }
+      .social-sidebar a { font-size: 1.4rem; }
+      .hero h1 { font-size: clamp(2.8rem, 10vw, 6rem); }
+      .tagline { font-size: clamp(1.2rem, 5vw, 2rem); }
+      .hero-bg { background-position: center bottom; background-size: auto 70%; }
+    }
+
+    .section { padding: 100px 10%; }
+    .section h1 { text-align: center; font-size: 40px; margin-bottom: 50px; }
+
+    .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    .skill-box {
+      background: #161616;
+      padding: 30px;
+      border-radius: 20px;
+      transition: 0.3s;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+    .skill-box:hover { transform: translateY(-5px); background: #1c1c1c; }
+
+    .freelance-box {
+      text-align: center;
+      max-width: 800px;
+      margin: auto;
+      background: #161616;
+      padding: 40px;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0,234,255,0.1);
+    }
+    .freelance-services { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 30px 0; }
+    .service {
+      background: #0f0f0f;
+      padding: 15px;
+      border-radius: 15px;
+      border: 1px solid rgba(0,234,255,0.3);
+    }
+
+    #contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 500px;
+      margin: auto;
+    }
+    #contact-form input, #contact-form textarea {
+      padding: 15px;
+      border-radius: 10px;
+      border: none;
+      background: #161616;
+      color: white;
+    }
+    .testimonials {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px; /* more breathing room */
 }
 
-body{
-background:#0e0e0e;
-color:#fff;
+.testimonial-card {
+  background: linear-gradient(135deg, #161616, #1c1c1c);
+  padding: 30px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 234, 255, 0.08);
+  border: 1px solid rgba(0, 234, 255, 0.12);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-html{
-scroll-behavior:smooth;
+.testimonial-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0, 234, 255, 0.18);
+  border-color: #00eaff;
 }
 
-/* HEADER */
-
-header{
-box-shadow:0 5px 20px rgba(0,0,0,0.5);
-width:100%;
-padding:30px 8%;
-display:flex;
-justify-content:space-between;
-position:fixed;
-top:0;
-left:0;
-z-index:10;
-background:rgba(0,0,0,0.4);
-backdrop-filter:blur(12px);
+.testimonial-card::before {
+  content: '“';
+  position: absolute;
+  top: 20px;
+  left: 25px;
+  font-size: 6rem;
+  opacity: 0.08;
+  color: #00eaff;
+  line-height: 1;
+  font-family: serif;
 }
 
-header h1{
-font-size:28px;
-letter-spacing:2px;
+.testimonial-card p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  opacity: 0.9;
+  margin: 1.5rem 0;
+  position: relative;
+  z-index: 1;
 }
 
-header a{
-color:#fff;
-margin-left:25px;
-text-decoration:none;
-font-size:18px;
+.testimonial-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
-header nav a:hover{
-color:#00eaff;
+.avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(0, 234, 255, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 234, 255, 0.15);
 }
 
-/* HERO */
-
-.hero{
-height:100vh;
-display:flex;
-align-items:center;
-padding:0 10%;
-background:linear-gradient(120deg,#0e0e0e,#141414);
+.client-info h4 {
+  color: #00eaff;
+  font-size: 1.2rem;
+  margin-bottom: 4px;
 }
 
-.hero-container{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:50px;
-width:100%;
+.company {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin: 0;
 }
 
-.hero-content h2{
-font-size:54px;
-margin-bottom:10px;
+.stars {
+  color: #ffd700; /* gold stars */
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  margin-top: 6px;
 }
 
-.hero-content h3{
-font-size:32px;
-color:#00eaff;
-margin-bottom:20px;
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      background: #111;
+      margin-top: 30px;
+      opacity: 0.8;
+    }
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
 }
 
-.hero-content p{
-max-width:500px;
-opacity:0.8;
+.project-card {
+  background: linear-gradient(145deg, #161616, #1a1a1a);
+  border: 1px solid rgba(0, 234, 255, 0.15);
+  border-radius: 24px;
+  padding: 28px;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-.highlight{
-color:#00eaff;
+.project-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 25px 60px rgba(0, 234, 255, 0.18);
+  border-color: #00eaff;
 }
 
-.hero-image img{
-width:320px;
-border-radius:25px;
-box-shadow:0 15px 40px rgba(0,234,255,0.2);
+.project-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(0, 234, 255, 0.12),
+    transparent
+  );
+  transition: all 0.7s;
+  pointer-events: none;
 }
 
-/* BUTTON */
-
-.btn{
-display:inline-flex;
-margin-top:25px;
-padding:20px 40px;
-border-radius:100px;
-background:#00eaff;
-color:#000;
-font-weight:600;
-text-decoration:none;
-transition:0.3s;
+.project-card:hover::before {
+  transform: translate(25%, 25%);
 }
 
-.btn:hover{
-background:#00bcd4;
+.project-card h3 {
+  color: #00eaff;
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
 }
 
-/* SECTION */
-
-.section{
-padding:100px 10%;
+.project-card p {
+  opacity: 0.85;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  min-height: 60px; /* consistent height */
 }
 
-.section h1{
-text-align:center;
-font-size:40px;
-margin-bottom:50px;
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 25px;
 }
 
-/* SKILLS */
-
-.skills{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
+.project-tech span {
+  background: rgba(0, 234, 255, 0.1);
+  border: 1px solid rgba(0, 234, 255, 0.4);
+  color: #00eaff;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
-.skill-box{
-background:#161616;
-padding:30px;
-border-radius:20px;
-transition:0.3s;
+.project-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
-.skill-box:hover{
-transform:translateY(-5px);
-background:#1c1c1c;
+.project-btn {
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+  font-size: 0.95rem;
 }
 
-/* PROJECTS */
-/* Animated project card */
-
-.project-card{
-position:relative;
-overflow:hidden;
+.project-btn.live {
+  background: #00eaff;
+  color: #000;
 }
 
-.project-card::before{
-content:"";
-position:absolute;
-top:0;
-left:-100%;
-width:100%;
-height:100%;
-background:linear-gradient(
-120deg,
-transparent,
-rgba(0,234,255,0.4),
-transparent
-);
-transition:0.6s;
+.project-btn.live:hover {
+  background: #00bcd4;
+  transform: translateY(-2px);
 }
 
-.project-card:hover::before{
-left:100%;
+.project-btn.github {
+  background: transparent;
+  border: 2px solid #00eaff;
+  color: #00eaff;
 }
 
-.project-card:hover{
-transform:translateY(-12px) scale(1.02);
-box-shadow:0 20px 50px rgba(0,234,255,0.25);
+.project-btn.github:hover {
+  background: #00eaff;
+  color: #000;
+  transform: translateY(-2px);
 }
-
-.projects{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:30px;
-}
-
-.project-card{
-background:#161616;
-padding:25px;
-border-radius:25px;
-transition:0.4s;
-box-shadow:0 10px 25px rgba(0,234,255,0.05);
-}
-
-.project-card:hover{
-transform:translateY(-10px);
-box-shadow:0 15px 35px rgba(0,234,255,0.15);
-}
-.testimonials{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:25px;
-}
-
-.testimonial-card{
-background:#161616;
-padding:25px;
-border-radius:20px;
-box-shadow:0 10px 25px rgba(0,234,255,0.05);
-transition:0.3s;
-}
-
-.testimonial-card:hover{
-transform:translateY(-6px);
-box-shadow:0 15px 35px rgba(0,234,255,0.15);
-}
-
-.testimonial-card p{
-opacity:0.85;
-margin-bottom:15px;
-}
-
-.testimonial-card h4{
-color:#00eaff;
-font-weight:500;
-}
-.project-card img{
-width:100%;
-border-radius:15px;
-margin-bottom:15px;
-}
-
-.project-card h3{
-margin-bottom:10px;
-color:#00eaff;
-}
-
-.project-card p{
-opacity:0.8;
-margin-bottom:20px;
-}
-
-.project-tech{
-display:flex;
-gap:10px;
-margin-bottom:20px;
-flex-wrap:wrap;
-}
-
-.project-tech span{
-background:#0f0f0f;
-border:1px solid #00eaff;
-padding:5px 12px;
-border-radius:20px;
-font-size:12px;
-color:#00eaff;
-}
-
-.project-buttons{
-display:flex;
-gap:15px;
-}
-
-.project-btn{
-padding:10px 20px;
-border-radius:50px;
-background:#00eaff;
-color:#000;
-text-decoration:none;
-font-weight:600;
-}
-
-.project-btn.github{
-background:transparent;
-border:2px solid #00eaff;
-color:#00eaff;
-}
-
-/* FREELANCE */
-
-.freelance-box{
-text-align:center;
-max-width:800px;
-margin:auto;
-background:#161616;
-padding:40px;
-border-radius:25px;
-box-shadow:0 10px 30px rgba(0,234,255,0.1);
-}
-
-.freelance-services{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:15px;
-margin:30px 0;
-}
-
-.service{
-background:#0f0f0f;
-padding:15px;
-border-radius:15px;
-border:1px solid rgba(0,234,255,0.3);
-}
-
-/* CONTACT */
-
-#contact-form{
-display:flex;
-flex-direction:column;
-gap:15px;
-max-width:500px;
-margin:auto;
-}
-
-#contact-form input,
-#contact-form textarea{
-padding:15px;
-border-radius:10px;
-border:none;
-background:#161616;
-color:white;
-}
-
-#contact-form button{
-align-self:center;
-}
-
-/* FOOTER */
-
-footer{
-text-align:center;
-padding:40px 0;
-background:#111;
-margin-top:30px;
-opacity:0.8;
-}
-
-/* FLOAT CONTACT */
-
-.contact-float{
-position:fixed;
-bottom:30px;
-right:30px;
-width:60px;
-height:60px;
-background:#00eaff;
-color:#000;
-font-size:28px;
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:50%;
-text-decoration:none;
-box-shadow:0 8px 25px rgba(0,234,255,0.4);
-}
-
-.contact-float:hover{
-transform:scale(1.1);
-background:#00bcd4;
-}
-
-</style>
+    .contact-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: #00eaff;
+      color: #000;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      text-decoration: none;
+      box-shadow: 0 8px 25px rgba(0,234,255,0.4);
+    }
+    .contact-float:hover { transform: scale(1.1); background: #00bcd4; }
+  </style>
 </head>
-
 <body>
 
-<header>
-<h1>MyPortfolio</h1>
-<nav>
-<a href="#home">Home</a>
-<a href="#skills">Skills</a>
-<a href="#projects">Projects</a>
-<a href="#contact">Contact</a>
-</nav>
-</header>
+  <header>
+    <h1>ELOUNDOU</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-<section class="hero" id="home">
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
 
-<div class="hero-container">
+    <div class="social-sidebar">
+      <a href="https://www.youtube.com/@YOUR_ACTUAL_CHANNEL" target="_blank" aria-label="YouTube">
+        <i class="fab fa-youtube"></i>
+      </a>
+      <a href="https://www.instagram.com/YOUR_ACTUAL_USERNAME" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
 
-<div class="hero-content">
+    <div class="hero-content">
+      <h1>I'm <span style="color:#00eaff;">ELOUNDOU LUC GABRIEL</span></h1>
+      <p class="tagline">Web Developer & Tech Enthusiast</p>
+      
+      <div class="hero-buttons">
+        <a href="#skills" class="btn">My Skills</a>
+        <a href="#contact" class="btn secondary">Get in Touch</a>
+      </div>
+    </div>
+  </section>
 
-<h2>Hello, I'm <span class="highlight">ELOUNDOU LUC GABRIEL</span></h2>
-
-<h3>Web Developer & Tech Enthusiast</h3>
-
-<p>
-Building fast, modern, responsive websites.
-Passionate about clean code and great UX.
-</p>
-
-<a href="#projects" class="btn">View My Work</a>
-
-</div>
-
-<div class="hero-image">
-
-<img src="123.jpg" alt="Luc Gabriel">
-
-</div>
-
-</div>
-
+  <section class="section" id="skills">
+    <h1>My Skills</h1>
+    <div class="skills">
+      <div class="skill-box">HTML & CSS</div>
+      <div class="skill-box">JavaScript</div>
+      <div class="skill-box">React</div>
+      <div class="skill-box">UI/UX Design</div>
+      <div class="skill-box">Node.js & Express</div>
+    </div>
+  </section>
+  <section class="section" id="projects">
+  <h1>My Projects</h1>
+  <div id="github-projects" class="projects">
+    <!-- Cards will be injected here by JS -->
+    <div id="projects-loading" style="text-align:center; padding: 50px; opacity:0.7;">
+      Loading awesome projects from GitHub...
+    </div>
+    <div id="projects-error" style="text-align:center; padding: 50px; color:#ff6b6b; display:none;">
+      Couldn't load projects right now. Check back soon or visit my GitHub directly!
+    </div>
+  </div>
 </section>
 
-<section class="section" id="skills">
+  <section class="section" id="freelance">
+    <h1>Hire Me</h1>
+    <div class="freelance-box">
+      <h2>I build modern websites for businesses</h2>
+      <p>Need a website for your business or startup? I design fast, responsive websites.</p>
+      <div class="freelance-services">
+        <div class="service">🌐 Business Websites</div>
+        <div class="service">🛒 E-commerce Websites</div>
+        <div class="service">⚡ Landing Pages</div>
+        <div class="service">🎨 UI / UX Design</div>
+      </div>
+      <a href="#contact" class="btn">Start a Project</a>
+    </div>
+  </section>
 
-<h1>My Skills</h1>
+  <section class="section" id="testimonials">
+  <h1>Client Testimonials</h1>
+  <div class="testimonials">
+    <div class="testimonial-card">
+      <div class="testimonial-header">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80" alt="Client 1" class="avatar">
+        <div class="client-info">
+          <h4>Business Owner</h4>
+          <p class="company">Tech Startup CEO</p>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+      <p>"Luc built our business website and the results were amazing. Fast, modern and professional. Conversion rate up 40% in the first month."</p>
+    </div>
 
-<div class="skills">
+    <div class="testimonial-card">
+      <div class="testimonial-header">
+        <img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?auto=format&fit=crop&w=200&h=200&q=80" alt="Client 2" class="avatar">
+        <div class="client-info">
+          <h4>Startup Founder</h4>
+          <p class="company">E-commerce Brand</p>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+      <p>"Very talented young developer. Communication was great and the website design exceeded expectations. Delivered ahead of schedule."</p>
+    </div>
 
-<div class="skill-box">HTML & CSS</div>
-<div class="skill-box">JavaScript</div>
-<div class="skill-box">React</div>
-<div class="skill-box">UI/UX Design</div>
-<div class="skill-box">Node.js & Express</div>
-
-</div>
-
+    <div class="testimonial-card">
+      <div class="testimonial-header">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&h=200&q=80" alt="Client 3" class="avatar">
+        <div class="client-info">
+          <h4>E-commerce Client</h4>
+          <p class="company">Retail Store Owner</p>
+          <div class="stars">★★★★★</div>
+        </div>
+      </div>
+      <p>"Our online store now looks modern and works perfectly on mobile. Sales doubled after launch — highly recommend!"</p>
+    </div>
+  </div>
 </section>
-<section class="section">
-
-<h1>My GitHub Projects</h1>
-
-<div id="github-projects" class="projects"></div>
-
-</section>
-
-<section class="section" id="projects">
-
-<h1>Projects</h1>
-
-<div class="projects">
-
-<div class="project-card">
-
-<img src="project1.jpg">
-
-<h3>E-Commerce Website</h3>
-
-<p>Responsive online store interface.</p>
-
-<div class="project-tech">
-<span>HTML</span>
-<span>CSS</span>
-<span>JavaScript</span>
-</div>
-
-<div class="project-buttons">
-<a href="#" class="project-btn">Live Demo</a>
-<a href="#" class="project-btn github">GitHub</a>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<section class="section" id="freelance">
-
-<h1>Hire Me</h1>
-
-<div class="freelance-box">
-
-<h2>I build modern websites for businesses</h2>
-
-<p>
-Need a website for your business or startup?
-I design fast, responsive websites.
-</p>
-
-<div class="freelance-services">
-
-<div class="service">🌐 Business Websites</div>
-<div class="service">🛒 E-commerce Websites</div>
-<div class="service">⚡ Landing Pages</div>
-<div class="service">🎨 UI / UX Design</div>
-
-</div>
-
-<a href="#contact" class="btn">Start a Project</a>
-
-</div>
-
-</section>
-<section class="section" id="testimonials">
-
-<h1>Client Testimonials</h1>
-
-<div class="testimonials">
-
-<div class="testimonial-card">
-
-<p>
-"Luc built our business website and the results were amazing.
-Fast, modern and professional."
-</p>
-
-<h4>— Business Owner</h4>
-
-</div>
-
-<div class="testimonial-card">
-
-<p>
-"Very talented young developer. Communication was great and
-the website design exceeded expectations."
-</p>
-
-<h4>— Startup Founder</h4>
-
-</div>
-
-<div class="testimonial-card">
-
-<p>
-"Our online store now looks modern and works perfectly on mobile."
-</p>
-
-<h4>— E-commerce Client</h4>
-
-</div>
-
-</div>
-
-</section>
-
-<section class="section" id="contact">
-
-<h1>Get in Touch</h1>
-
-<form id="contact-form">
-
-<input type="text" placeholder="Your Name" required>
-<input type="email" placeholder="Your Email" required>
-<textarea rows="6" placeholder="Your Message"></textarea>
-
-<button class="btn">Send Message</button>
-
-</form>
-
-</section>
-
-<footer>
-
-<p>© 2026 Eloundou Luc Gabriel</p>
-<p>Phone: +237 676 794 80</p>
-<p>Email: lucgabriel036@gmail.com</p>
-
-</footer>
-
-<a href="https://wa.me/23767679480" class="contact-float">💬</a>
-<script>
-
-const username = "YOUR_GITHUB_USERNAME";
-
-fetch(`https://api.github.com/users/${username}/repos`)
-.then(res => res.json())
-.then(data => {
-
-const container = document.getElementById("github-projects");
-
-data.slice(0,6).forEach(repo => {
-
-const card = document.createElement("div");
-card.className = "project-card";
-
-card.innerHTML = `
-<h3>${repo.name}</h3>
-<p>${repo.description || "GitHub project repository"}</p>
-
-<div class="project-buttons">
-<a href="${repo.html_url}" target="_blank" class="project-btn github">
-View on GitHub
-</a>
-</div>
-`;
-
-container.appendChild(card);
-
-});
-
-});
-
+    
+  
+
+  <section class="section" id="contact">
+    <h1>Get in Touch</h1>
+    <form id="contact-form">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea rows="6" placeholder="Your Message"></textarea>
+      <button class="btn">Send Message</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2026 Eloundou Luc Gabriel</p>
+    <p>Phone: +237 676 794 80</p>
+    <p>Email: lucgabriel036@gmail.com</p>
+  </footer>
+
+  <a href="https://wa.me/23767679480" class="contact-float">💬</a>
+  <script>
+  const username = "lucgabriel036-svg"; // ← Change this to your real GitHub username!
+
+  fetch(`https://api.github.com/users/${username}/repos?sort=updated&direction=desc&per_page=6`)
+    .then(res => {
+      if (!res.ok) throw new Error("GitHub API error");
+      return res.json();
+    })
+    .then(data => {
+      const container = document.getElementById("github-projects");
+      const loading = document.getElementById("projects-loading");
+      const error = document.getElementById("projects-error");
+
+      loading.style.display = "none";
+
+      if (data.length === 0) {
+        error.textContent = "No public repositories found. Check back soon!";
+        error.style.display = "block";
+        return;
+      }
+
+      data.forEach(repo => {
+        const card = document.createElement("div");
+        card.className = "project-card";
+
+        // Simple tech badges (you can improve with repo.languages API if needed)
+        const techHTML = repo.language 
+          ? `<div class="project-tech"><span>${repo.language}</span></div>`
+          : "";
+
+        // Live demo if homepage exists
+        const liveBtn = repo.homepage 
+          ? `<a href="${repo.homepage}" target="_blank" class="project-btn live">Live Demo</a>`
+          : "";
+
+        card.innerHTML = `
+          <h3>${repo.name}</h3>
+          <p>${repo.description || "A cool project built with passion. Check it out on GitHub!"}</p>
+          ${techHTML}
+          <div class="project-buttons">
+            ${liveBtn}
+            <a href="${repo.html_url}" target="_blank" class="project-btn github">View on GitHub</a>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    })
+    .catch(err => {
+      console.error("GitHub fetch failed:", err);
+      document.getElementById("projects-loading").style.display = "none";
+      document.getElementById("projects-error").style.display = "block";
+    });
 </script>
 
 </body>
 </html>
+
